@@ -1,4 +1,4 @@
-package db
+package orbitdb
 
 import (
 	"context"
