@@ -263,6 +263,7 @@ require (
 )
 
 replace (
+	berty.tech/go-orbit-db => github.com/maoaixiao1314/go-orbit v1.25.0
 	// berty.tech/go-orbit-db => berty.tech/go-orbit-db v1.22.1
 	github.com/ipfs/go-ipfs-api => github.com/ipfs/go-ipfs-api v0.5.0
 

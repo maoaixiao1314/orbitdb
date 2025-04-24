@@ -2,8 +2,6 @@ bazil.org/fuse v0.0.0-20200117225306-7b5117fecadc h1:utDghgcjE8u+EBjHOgYT+dJPcnD
 bazil.org/fuse v0.0.0-20200117225306-7b5117fecadc/go.mod h1:FbcW6z/2VytnFDhZfumh8Ss8zxHE6qpMP5sHTRe0EaM=
 berty.tech/go-ipfs-log v1.10.2 h1:qolviVCX3zLecjxgj4tLf+LwUgSSUr8OqppHXuYiEvc=
 berty.tech/go-ipfs-log v1.10.2/go.mod h1:ODtCoR9h3JrJqSBv8OkESVDRhJzNLxUuxh5kG6hywPI=
-berty.tech/go-orbit-db v1.22.1 h1:rsuLULFfqfUUe5qS13LvhCnzSkd5S7KI+9nyexGcDaQ=
-berty.tech/go-orbit-db v1.22.1/go.mod h1:Z/DpHf3s/rEfWzmnDfddAdaHxWtmuWgkluIo+/uIX+c=
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 cloud.google.com/go v0.31.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 cloud.google.com/go v0.34.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
@@ -526,6 +524,8 @@ github.com/mailru/easyjson v0.0.0-20180823135443-60711f1a8329/go.mod h1:C1wdFJiN
 github.com/mailru/easyjson v0.0.0-20190312143242-1de009706dbe/go.mod h1:C1wdFJiN94OJF2b5HbByQZoLdCWB1Yqtg26g4irojpc=
 github.com/mailru/easyjson v0.7.7 h1:UGYAvKxe3sBsEDzO8ZeWOSlIQfWFlxbzLZe7hwFURr0=
 github.com/mailru/easyjson v0.7.7/go.mod h1:xzfreul335JAWq5oZzymOObrkdz5UnU4kGfJJLY9Nlc=
+github.com/maoaixiao1314/go-orbit v1.25.0 h1:g8hpuAdnLRZ5PqZPmTm+Nyi0gIufbjUWg4d6jS+/4ms=
+github.com/maoaixiao1314/go-orbit v1.25.0/go.mod h1:Z/DpHf3s/rEfWzmnDfddAdaHxWtmuWgkluIo+/uIX+c=
 github.com/marten-seemann/tcp v0.0.0-20210406111302-dfbc87cc63fd h1:br0buuQ854V8u83wA0rVZ8ttrq5CpaPZdvrK0LP2lOk=
 github.com/marten-seemann/tcp v0.0.0-20210406111302-dfbc87cc63fd/go.mod h1:QuCEs1Nt24+FYQEqAAncTDPJIuGs+LxK1MCiFL25pMU=
 github.com/mattn/go-colorable v0.0.9/go.mod h1:9vuHe8Xs5qXnSaW/c/ABM9alt+Vo+STaOChaDxuIBZU=
