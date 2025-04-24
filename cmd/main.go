@@ -73,8 +73,8 @@ func main() {
 	// }
 	// defer ipfsNode.Close()
 	node, _ := core.NewNode(ctx, &core.BuildCfg{
-		Online:  true,  // 必须为 true，OrbitDB 需要网络功能
-		NilRepo: false, // 需要持久化存储
+		Online: true, // 必须为 true，OrbitDB 需要网络功能
+		// NilRepo: false, // 需要持久化存储
 		ExtraOpts: map[string]bool{
 			"pubsub": true, // OrbitDB 依赖 PubSub
 			"mplex":  true, // 多路复用支持

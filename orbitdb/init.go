@@ -50,8 +50,8 @@ func Init() error {
 		// 初始化 IPFS 节点
 		ctx := context.Background()
 		ipfsNode, err = ipfsCore.NewNode(ctx, &ipfsCore.BuildCfg{
-			Online:  true,
-			NilRepo: false,
+			Online: true,
+			// NilRepo: false,
 			ExtraOpts: map[string]bool{
 				"pubsub": true,
 				"mplex":  true,

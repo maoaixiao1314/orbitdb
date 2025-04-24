@@ -7,7 +7,9 @@ import (
 	"os"
 	"path/filepath"
 
-	ipfsCore "github.com/ipfs/interface-go-ipfs-core"
+	//ipfsCore "github.com/ipfs/interface-go-ipfs-core"
+	coreiface "github.com/ipfs/kubo/core/coreiface"
+
 	"github.com/ipfs/kubo/config"
 	"github.com/ipfs/kubo/core"
 	"github.com/ipfs/kubo/core/coreapi"
@@ -26,7 +28,7 @@ import (
 )
 
 // InitIPFS 简单初始化 IPFS 节点（只在已存在仓库基础上，不自动初始化新仓库）
-func InitIPFS(repoPath string) (ipfsCore.CoreAPI, *core.IpfsNode, error) {
+func InitIPFS(repoPath string) (coreiface.CoreAPI, *core.IpfsNode, error) {
 	// 设置默认仓库路径
 	if repoPath == "" {
 		home, err := os.UserHomeDir()
