@@ -182,7 +182,6 @@ package orbitdb
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
 
@@ -225,6 +224,80 @@ func (a *OrbitDBAdapter) SaveEvent(ctx context.Context, event *nostr.Event) erro
 
 // QueryEvents 查询匹配过滤器的事件
 // 更新签名以匹配 func(ctx context.Context, filter nostr.Filter) (chan *nostr.Event, error)
+// func (a *OrbitDBAdapter) QueryEvents(ctx context.Context, filter nostr.Filter) (chan *nostr.Event, error) {
+// 	// 创建事件通道
+// 	eventChan := make(chan *nostr.Event)
+
+// 	go func() {
+// 		defer close(eventChan)
+
+// 		// 定义查询函数
+// 		queryFn := func(doc interface{}) (bool, error) {
+// 			event, ok := doc.(map[string]interface{})
+// 			if !ok {
+// 				return false, nil
+// 			}
+
+// 			// 实现过滤逻辑
+// 			if len(filter.IDs) > 0 {
+// 				id, ok := event["_id"].(string) // 注意这里是 _id 而不是 id
+// 				if !ok || !contains(filter.IDs, id) {
+// 					return false, nil
+// 				}
+// 			}
+
+// 			if len(filter.Authors) > 0 {
+// 				pubkey, ok := event["pubkey"].(string)
+// 				if !ok || !contains(filter.Authors, pubkey) {
+// 					return false, nil
+// 				}
+// 			}
+
+// 			if len(filter.Kinds) > 0 {
+// 				kind, ok := event["kind"].(float64)
+// 				if !ok || !containsInt(filter.Kinds, int(kind)) {
+// 					return false, nil
+// 				}
+// 			}
+// 			return true, nil
+// 		}
+
+// 		// 执行查询
+// 		docs, _ := a.db.Query(ctx, queryFn)
+// 		for _, doc := range docs {
+// 			// 检查上下文是否已取消
+// 			select {
+// 			case <-ctx.Done():
+// 				return
+// 			default:
+// 				// 继续处理
+// 			}
+
+// 			eventJSON, err := json.Marshal(doc)
+// 			if err != nil {
+// 				log.Printf("序列化事件失败: %v", err)
+// 				continue
+// 			}
+
+// 			var event nostr.Event
+// 			if err = json.Unmarshal(eventJSON, &event); err != nil {
+// 				log.Printf("反序列化事件失败: %v", err)
+// 				continue
+// 			}
+
+// 			// 发送事件到通道
+// 			select {
+// 			case <-ctx.Done():
+// 				return
+// 			case eventChan <- &event:
+// 				// 事件已发送
+// 			}
+// 		}
+// 	}()
+
+// 	return eventChan, nil
+// }
+
 func (a *OrbitDBAdapter) QueryEvents(ctx context.Context, filter nostr.Filter) (chan *nostr.Event, error) {
 	// 创建事件通道
 	eventChan := make(chan *nostr.Event)
@@ -260,6 +333,9 @@ func (a *OrbitDBAdapter) QueryEvents(ctx context.Context, filter nostr.Filter) (
 					return false, nil
 				}
 			}
+
+			// 可以添加更多过滤条件...
+
 			return true, nil
 		}
 
@@ -274,23 +350,55 @@ func (a *OrbitDBAdapter) QueryEvents(ctx context.Context, filter nostr.Filter) (
 				// 继续处理
 			}
 
-			eventJSON, err := json.Marshal(doc)
-			if err != nil {
-				log.Printf("序列化事件失败: %v", err)
+			// 直接构建事件对象，而不是通过JSON序列化和反序列化
+			docMap, ok := doc.(map[string]interface{})
+			if !ok {
+				log.Printf("无效的文档格式")
 				continue
 			}
 
-			var event nostr.Event
-			if err = json.Unmarshal(eventJSON, &event); err != nil {
-				log.Printf("反序列化事件失败: %v", err)
-				continue
+			event := &nostr.Event{}
+
+			// 设置基本字段
+			if id, ok := docMap["_id"].(string); ok {
+				event.ID = id
+			}
+			if pubkey, ok := docMap["pubkey"].(string); ok {
+				event.PubKey = pubkey
+			}
+			if createdAt, ok := docMap["created_at"].(float64); ok {
+				event.CreatedAt = nostr.Timestamp(createdAt)
+			}
+			if kind, ok := docMap["kind"].(float64); ok {
+				event.Kind = int(kind)
+			}
+			if content, ok := docMap["content"].(string); ok {
+				event.Content = content
+			}
+			if sig, ok := docMap["sig"].(string); ok {
+				event.Sig = sig
+			}
+
+			// 处理标签
+			if tagsData, ok := docMap["tags"].([]interface{}); ok {
+				for _, tagData := range tagsData {
+					if tagArray, ok := tagData.([]interface{}); ok {
+						var tag nostr.Tag
+						for _, item := range tagArray {
+							if str, ok := item.(string); ok {
+								tag = append(tag, str)
+							}
+						}
+						event.Tags = append(event.Tags, tag)
+					}
+				}
 			}
 
 			// 发送事件到通道
 			select {
 			case <-ctx.Done():
 				return
-			case eventChan <- &event:
+			case eventChan <- event:
 				// 事件已发送
 			}
 		}
