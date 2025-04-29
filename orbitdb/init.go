@@ -100,6 +100,8 @@ func Init() error {
 		documentDB = db
 
 		initialized = true
+		addr := documentDB.Address()
+		log.Printf("文档数据库地址: %s", addr)
 		log.Println("数据库初始化成功")
 	})
 
